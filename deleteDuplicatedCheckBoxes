@@ -1,0 +1,32 @@
+Sub DeleteDuplicatedCheckboxes()
+
+Dim myShape As Shape
+
+Set ws1 = ActiveWorkbook.Sheets("Hoja1")
+
+On Error Resume Next
+Dim d                   'Create a variable
+Set d = CreateObject("Scripting.Dictionary")
+
+Dim checkBoxCounter As Integer
+Dim removedBoxes As Integer
+
+For Each myShape In ws1.Shapes
+
+    If myShape.FormControlType = xlCheckBox Then
+        checkBoxCounter = checkBoxCounter + 1
+        If d.Exists(myShape.TopLeftCell.Address) Then
+            myShape.Delete
+            removedBoxes = removedBoxes + 1
+        Else
+            d.Add myShape.TopLeftCell.Address, myShape.TopLeftCell.Address
+        End If
+
+
+    End If
+Next
+Debug.Print "Total checkboxes: " & checkBoxCounter
+Debug.Print "Removed checkboxes: " & removedBoxes
+
+End Sub
+
